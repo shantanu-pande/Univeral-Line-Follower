@@ -1,7 +1,0 @@
-#define IR_FRONT A0
-#define IR_MID A1
-#define IR_LEFT A2
-#define IR_RIGHT A3
-#define IR_RIGHT_MOST A6
-#define IR_LEFT_MOST A7
-#define IR_ALL {IR_MID, IR_FRONT, IR_LEFT_MOST, IR_RIGHT_MOST, IR_LEFT, IR_RIGHT}

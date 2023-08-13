@@ -1,18 +1,29 @@
 #include <Arduino.h>
-#include <PinSetup.h> //define pins here [lib/LFR_Lib/PinSetup.h]
+#include <Definiation.h>
+#define DEBUG_STAT false
+#include <debug.h>
+#include <Motor.h>
+#include <PID_v1.h>
 
-int caliberate(int, int);
+
+uint16_t PID(uint16_t ERR);
+
+Motor left(3, 5);
+Motor right(6, 9);
+
 
 void setup() {
-  int result = caliberate(2, 3);
 
+    left.begin();
+    right.begin();
+    left.stop();
+    right.stop();    
 }
 
 void loop() {
-
+    left.forward(255);
+    delay(1000);
+    right.reverse(255);
+    delay(1000);
 }
 
-// caliberates the ir sensors
-int caliberate(int x, int y) {
-  return x + y;
-}
