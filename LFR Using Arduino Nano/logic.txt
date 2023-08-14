@@ -1,0 +1,9 @@
+
+LFR tasks:
+ 1. follow the straight line 
+ 2. turn a specific angle
+ 3. avoid obstacle
+ 4. follow the wall
+
+modules:
+ 1. 
