@@ -7,7 +7,7 @@
 
 // #include <IR.h> Not Created yet
 
-// #include <HCSR04.h> Need some changes to work with RTOS updates
+#include <HCSR04.h> // Need some changes to work with RTOS updates
 // https://github.com/gamegine/HCSR04-ultrasonic-sensor-lib
 
 
@@ -18,19 +18,24 @@ MPU6050 mpu6050(Wire);
 // IR IR3(pin);
 // ...
 
-// HCSR04 HC_FRONT(5, 6);
-// HCSR04 HC_LEFT(5, 6);
-// HCSR04 HC_RIGHT(5, 6);
+HCSR04 HC_FRONT(18, 17);
+HCSR04 HC_LEFT(18, 19);
+HCSR04 HC_RIGHT(18, 5);
 
 
 void MPU_Update( void * parameter ) {
   for (;;) {
     mpu6050.update();
+    // TelnetStream.println("MPU_UPDATE");
+    vTaskDelay(10/portTICK_PERIOD_MS);
   }
 }
 
 void IR_Update( void * parameter ) {
   for (;;) {
+    // TelnetStream.println("IR UPDATE");
+    vTaskDelay(10/portTICK_PERIOD_MS);
+
     // IR1.update();
     // ...
   }
@@ -38,6 +43,14 @@ void IR_Update( void * parameter ) {
 
 void HCSR04_Update( void * parameter ) {
   for (;;) {
+    // TelnetStream.print("HCSE04 Update: ");
+    // TelnetStream.print("\t");
+    // TelnetStream.print(HC_FRONT.dist());
+    // TelnetStream.print(" \t");
+    // TelnetStream.print(HC_LEFT.dist());
+    // TelnetStream.print(" \t");
+    // TelnetStream.println(HC_RIGHT.dist());
+    vTaskDelay(10/portTICK_PERIOD_MS);
     // HC_FRONT.update();
     // ...
   }
@@ -60,30 +73,32 @@ void setup() {
 
   mpu6050.calcGyroOffsets(true);
 
-  xTaskCreate(
+  xTaskCreatePinnedToCore(
     MPU_Update,          /* Task function. */
     "MPU_Update",        /* String with name of task. */
     10000,            /* Stack size in bytes. */
     NULL,             /* Parameter passed as input of the task */
     1,                /* Priority of the task. */
-    NULL);            /* Task handle. */
+    NULL,             /* Task handle. */
+    1);               
     
-  xTaskCreate(
+  xTaskCreatePinnedToCore(
     IR_Update,          /* Task function. */
     "IR_Update",        /* String with name of task. */
-    1000,            /* Stack size in bytes. */
+    10000,            /* Stack size in bytes. */
     NULL,             /* Parameter passed as input of the task */
     1,                /* Priority of the task. */
-    NULL);            /* Task handle. */
-    
-  xTaskCreate(
+    NULL,            /* Task handle. */
+    1);
+
+  xTaskCreatePinnedToCore(
     HCSR04_Update,          /* Task function. */
     "HCSR04_Update",        /* String with name of task. */
-    1000,            /* Stack size in bytes. */
+    10000,            /* Stack size in bytes. */
     NULL,             /* Parameter passed as input of the task */
-    1,                /* Priority of the task. */
-    NULL);            /* Task handle. */
-
+    2,                /* Priority of the task. */
+    NULL,            /* Task handle. */
+    1);
 }
 
 
