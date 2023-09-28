@@ -4,29 +4,27 @@
 #include <OTA.h>  // optimization needs here
 #include <MPU6050_tockn.h>
 #include <Wire.h>
-
-// #include <IR.h> Not Created yet
-
+#include <IR.h>
+#include <log.h>
 #include <HCSR04.h> // Need some changes to work with RTOS updates
 // https://github.com/gamegine/HCSR04-ultrasonic-sensor-lib
 
 
 MPU6050 mpu6050(Wire);
 
-// IR IR1(pin);
-// IR IR2(pin);
-// IR IR3(pin);
+// IR IR1(IR_1);
 // ...
 
-HCSR04 HC_FRONT(18, 17);
-HCSR04 HC_LEFT(18, 19);
-HCSR04 HC_RIGHT(18, 5);
+HCSR04 HC_FRONT(ULTRA_COMMON_TRIG, ULTRA_FRONT);
+HCSR04 HC_LEFT(ULTRA_COMMON_TRIG, ULTRA_LEFT);
+HCSR04 HC_RIGHT(ULTRA_COMMON_TRIG, ULTRA_RIGHT);
 
 
 void MPU_Update( void * parameter ) {
   for (;;) {
     mpu6050.update();
-    // TelnetStream.println("MPU_UPDATE");
+    TelnetStream.println("MPU_UPDATE");
+    // TelnetStream.print(mpu6050.getAngleZ);
     vTaskDelay(10/portTICK_PERIOD_MS);
   }
 }
@@ -43,13 +41,13 @@ void IR_Update( void * parameter ) {
 
 void HCSR04_Update( void * parameter ) {
   for (;;) {
-    // TelnetStream.print("HCSE04 Update: ");
-    // TelnetStream.print("\t");
-    // TelnetStream.print(HC_FRONT.dist());
-    // TelnetStream.print(" \t");
-    // TelnetStream.print(HC_LEFT.dist());
-    // TelnetStream.print(" \t");
-    // TelnetStream.println(HC_RIGHT.dist());
+    TelnetStream.print("HCSE04 Update: ");
+    TelnetStream.print("\t");
+    TelnetStream.print(HC_FRONT.dist());
+    TelnetStream.print(" \t");
+    TelnetStream.print(HC_LEFT.dist());
+    TelnetStream.print(" \t");
+    TelnetStream.println(HC_RIGHT.dist());
     vTaskDelay(10/portTICK_PERIOD_MS);
     // HC_FRONT.update();
     // ...
@@ -64,12 +62,14 @@ void setup() {
   Wire.begin();
   mpu6050.begin();
 
-  // Config.setup()
-  pinMode(14, OUTPUT);
-  pinMode(27, OUTPUT);
+  pinMode(LEFT_F, OUTPUT);
+  pinMode(LEFT_R, OUTPUT);
   pinMode(2, OUTPUT);
-  digitalWrite(27, LOW);
-  // ^^^^^^^^^^^^^^^^^^^^^
+
+  delay(3000);
+
+  // analogWrite(RIGHT_F, 90);
+  // analogWrite(LEFT_F, 90);
 
   mpu6050.calcGyroOffsets(true);
 
