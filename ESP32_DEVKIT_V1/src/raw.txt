@@ -1,0 +1,36 @@
+void Do(uint8_t * txt)
+{ 
+  char forward[] = "forward";
+  char reverse[] = "reverse";
+  char stop[] = "stop";
+  // if(strcmp((const char *)txt, forward) == 0){
+  //   TelnetStream.println("Forward");
+  //   digitalWrite(LEFT_R, LOW);
+  //   digitalWrite(RIGHT_R, LOW);
+  //   analogWrite(LEFT_F, 200);
+  //   analogWrite(RIGHT_F, 200);
+  // }
+
+}
+
+
+// xTaskCreatePinnedToCore(
+  //   IR_Update,          /* Task function. */
+  //   "IR_Update",        /* String with name of task. */
+  //   10000,            /* Stack size in bytes. */
+  //   NULL,             /* Parameter passed as input of the task */
+  //   1,                /* Priority of the task. */
+  //   NULL,            /* Task handle. */
+  //   1);
+
+  // xTaskCreatePinnedToCore(
+  //   HCSR04_Update,          /* Task function. */
+  //   "HCSR04_Update",        /* String with name of task. */
+  //   10000,            /* Stack size in bytes. */
+  //   NULL,             /* Parameter passed as input of the task */
+  //   2,                /* Priority of the task. */
+  //   NULL,            /* Task handle. */
+  //   1);
+
+
+  
